@@ -1,5 +1,5 @@
 terraform {
   backend "local" {
-    path = "C:/Users/gaura/Downloads/terraform.tfstate"
+    path = "C:/Users/gaurav/Downloads/terraform.tfstate"
   }
 }
