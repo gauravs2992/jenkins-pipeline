@@ -12,17 +12,18 @@ pipeline {
     agent any
     steps {
         sh '''
-            sudo apt update && sudo apt install -y curl gnupg software-properties-common
-            
-            # Add HashiCorp GPG key and repository
-            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-            
-            # Install Terraform
-            sudo apt update && sudo apt install -y terraform
-            
-            # Verify installation
-            terraform -v
+            # Download and store the GPG key
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | \
+            gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+            # Add the HashiCorp repo
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+            https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+            > /etc/apt/sources.list.d/hashicorp.list
+
+            # Update and install Terraform
+            apt update
+            apt install terraform -y
         '''
     }
 }
