@@ -6,7 +6,9 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "eu-west-3"
     }
-    stage('Install Terraform') {
+    
+    stages {
+        stage('Install Terraform') {
     agent any
     steps {
         sh '''
@@ -24,7 +26,6 @@ pipeline {
         '''
     }
 }
-    stages {
         stage("Create an EKS Cluster") {
             steps {
                 script {
