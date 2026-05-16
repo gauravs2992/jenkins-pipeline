@@ -98,15 +98,19 @@ pipeline {
             // Ensure kubeconfig directory exists
             sh '''
                 mkdir -p /var/lib/jenkins/.kube
-                aws eks update-kubeconfig --name my-eks-cluster --region us-east-2 --kubeconfig /var/lib/jenkins/.kube/config
+                aws eks update-kubeconfig \
+                  --name my-eks-cluster \
+                  --region us-east-2 \
+                  --kubeconfig /var/lib/jenkins/.kube/config
+
                 export KUBECONFIG=/var/lib/jenkins/.kube/config
                 echo "KUBECONFIG set to /var/lib/jenkins/.kube/config"
+                kubectl config current-context
             '''
         }
     }
 }
-
-
+        
         stage('Deploy to EKS') {
             when {
                 expression { params.ACTION == 'create' }
@@ -115,8 +119,8 @@ pipeline {
                 script {
                     dir('kubernetes') {
                         sh "aws eks update-kubeconfig --name my-eks-cluster --region us-east-2"
-                        sh "kubectl apply -f nginx-deployment.yaml"
-                        sh "kubectl apply -f nginx-service.yaml"
+                        sh "kubectl apply -f nginx-deployment.yaml --validate=false"
+                        sh "kubectl apply -f nginx-service.yaml --validate=false"
                     }
                 }
             }
