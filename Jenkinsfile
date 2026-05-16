@@ -74,6 +74,21 @@ pipeline {
             }
         }
 
+        stage('Configure Kubeconfig') {
+    steps {
+        script {
+            // Ensure kubeconfig directory exists
+            sh '''
+                mkdir -p /var/lib/jenkins/.kube
+                aws eks update-kubeconfig --name my-eks-cluster --region us-east-2 --kubeconfig /var/lib/jenkins/.kube/config
+                export KUBECONFIG=/var/lib/jenkins/.kube/config
+                echo "KUBECONFIG set to /var/lib/jenkins/.kube/config"
+            '''
+        }
+    }
+}
+
+
         stage('Install kubectl') {
             when {
                 not {
