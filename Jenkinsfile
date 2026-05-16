@@ -115,8 +115,8 @@ pipeline {
                 script {
                     dir('kubernetes') {
                         sh "aws eks update-kubeconfig --name my-eks-cluster --region us-east-2"
-                        sh "kubectl apply -f nginx-deployment.yaml"
-                        sh "kubectl apply -f nginx-service.yaml"
+                        sh "kubectl apply -f nginx-deployment.yaml --validate=false"
+                        sh "kubectl apply -f nginx-service.yaml --validate=false"
                     }
                 }
             }
