@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     dir('2-terraform-eks-deployment') {
-                        sh "terraform init -reconfigure"
+                        sh "terraform init -reconfigure -upgrade"
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
                     }
