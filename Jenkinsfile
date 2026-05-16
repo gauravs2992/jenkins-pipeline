@@ -93,23 +93,23 @@ pipeline {
         }
 
         stage('Configure Kubeconfig') {
+    environment {
+        KUBECONFIG = "/var/lib/jenkins/.kube/config"
+    }
     steps {
-        script {
-            // Ensure kubeconfig directory exists
-            sh '''
-                mkdir -p /var/lib/jenkins/.kube
-                aws eks update-kubeconfig \
-                  --name my-eks-cluster \
-                  --region us-east-2 \
-                  --kubeconfig /var/lib/jenkins/.kube/config
+        sh '''
+            mkdir -p /var/lib/jenkins/.kube
+            aws eks update-kubeconfig \
+              --name my-eks-cluster \
+              --region us-east-2 \
+              --kubeconfig $KUBECONFIG
 
-                export KUBECONFIG=/var/lib/jenkins/.kube/config
-                echo "KUBECONFIG set to /var/lib/jenkins/.kube/config"
-                kubectl config current-context
-            '''
-        }
+            echo "KUBECONFIG set to $KUBECONFIG"
+            kubectl config current-context
+        '''
     }
 }
+
         
         stage('Deploy to EKS') {
             when {
