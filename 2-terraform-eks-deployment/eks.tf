@@ -20,7 +20,7 @@ module "eks" {
             max_size = 3
             desired_size = 2
 
-            instance_types = ["t2.micro"]
+            instance_types = ["t2.medium"]
             # Explicitly set the AMI type to avoid unsupported errors
             ami_type = "AL2_x86_64"   # Amazon Linux 2 EKS-optimized AMI
             # Other valid options: "AL2_x86_64_GPU", "BOTTLEROCKET_x86_64"
