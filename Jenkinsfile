@@ -27,6 +27,13 @@ pipeline {
         '''
     }
 }
+        stage('Terraform Init') {
+    agent any
+    steps {
+        // The -reconfigure flag forces Terraform to use the current backend settings
+        sh 'terraform init -reconfigure'
+    }
+}
         stage("Create an EKS Cluster") {
             steps {
                 script {
